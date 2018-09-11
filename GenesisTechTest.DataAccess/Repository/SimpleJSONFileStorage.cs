@@ -10,7 +10,7 @@ namespace GenesisTechTest.DataAccess.Repository
 {
     public class SimpleJSONFileStorage : IStorageRepository
     {
-        private static readonly string _storageName = "simplefilestorage.txt";
+        private static readonly string _storageName = "simpleJSONFileStorage.txt";
 
         public User GetByEmailOrDefault(string emaild)
         {
@@ -29,18 +29,16 @@ namespace GenesisTechTest.DataAccess.Repository
             WriteToDb(users);
         }
 
-        public bool SetLastLogin(Guid id, DateTime lastLogin)
+        public void UpdateLastLogin(Guid id, DateTime lastLogin, string token)
         {
             var users = GetAll();
             var user = users.FirstOrDefault(x => x.Id == id);
             if (user != null)
             {
                 user.LastLoginOn = lastLogin;
+                user.Token = token;
                 WriteToDb(users);
-                return true;
             }
-
-            return false;
         }
 
         public bool IsEmailAlreadyExists(string email)

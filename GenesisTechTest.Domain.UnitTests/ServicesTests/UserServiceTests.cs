@@ -16,7 +16,7 @@ namespace GenesisTechTest.Domain.UnitTests.ServicesTests
         private readonly UserService _service;
         private readonly string invalidEmail;
         private readonly DateTime lastLogin;
-        private readonly User mockuser;
+        private readonly User validUser;
         private readonly Guid invalidUser;
 
         public UserServiceTests()
@@ -25,19 +25,19 @@ namespace GenesisTechTest.Domain.UnitTests.ServicesTests
             invalidEmail = "invalid@test.com";
             lastLogin = DateTime.UtcNow.AddYears(-1);
 
-            mockuser = new User()
+            validUser = new User()
             {
                 Id = Guid.NewGuid(),
-                Email = "real@test.com",
+                Email = "valid@test.com",
                 LastLoginOn = lastLogin
             };
 
             var mockStorage = new Mock<IStorageRepository>();
-            mockStorage.Setup(p => p.GetByUserIdOrDefault(mockuser.Id)).Returns(mockuser);
+            mockStorage.Setup(p => p.GetByUserIdOrDefault(validUser.Id)).Returns(validUser);
             mockStorage.Setup(p => p.GetByUserIdOrDefault(invalidUser)).Returns((User)null);
-            mockStorage.Setup(p => p.GetByEmailOrDefault(mockuser.Email)).Returns(mockuser);
+            mockStorage.Setup(p => p.GetByEmailOrDefault(validUser.Email)).Returns(validUser);
             mockStorage.Setup(p => p.GetByEmailOrDefault(invalidEmail)).Returns((User)null);
-            mockStorage.Setup(p => p.IsEmailAlreadyExists(mockuser.Email)).Returns(true);
+            mockStorage.Setup(p => p.IsEmailAlreadyExists(validUser.Email)).Returns(true);
             mockStorage.Setup(p => p.IsEmailAlreadyExists(invalidEmail)).Returns(false);
 
             var mockIdenityService = new Mock<IIdentityService>();
@@ -53,7 +53,7 @@ namespace GenesisTechTest.Domain.UnitTests.ServicesTests
         [Test]
         public void Can_Get_User_By_ID()
         {
-            var result = _service.GetByUserIdOrDefault(mockuser.Id);
+            var result = _service.GetByUserIdOrDefault(validUser.Id);
             Assert.NotNull(result);
         }
 
@@ -67,19 +67,19 @@ namespace GenesisTechTest.Domain.UnitTests.ServicesTests
         [Test]
         public void Can_Get_User_Credentials_Invalid_EMail_Exception()
         {
-            Assert.Throws<InvalidEmailAndPasswordException>(() => _service.GetByEmailAndPasswordOrDefault(invalidEmail, "password"));
+            Assert.Throws<InvalidEmailAndPasswordException>(() => _service.SignIn(invalidEmail, "password"));
         }
 
         [Test]
         public void Can_Get_User_Credentials_Invalid_Password_Exception()
         {
-            Assert.Throws<InvalidEmailAndPasswordException>(() => _service.GetByEmailAndPasswordOrDefault(mockuser.Email, "invalid"));
+            Assert.Throws<InvalidEmailAndPasswordException>(() => _service.SignIn(validUser.Email, "invalid"));
         }
 
         [Test]
         public void Can_Get_User_Credentials_Success()
         {
-            var result = _service.GetByEmailAndPasswordOrDefault(mockuser.Email, "valid");
+            var result = _service.SignIn(validUser.Email, "valid");
             Assert.IsTrue(result.LastLoginOn > lastLogin);
             Assert.IsNotNull(result.Token);
         }
@@ -87,7 +87,7 @@ namespace GenesisTechTest.Domain.UnitTests.ServicesTests
         [Test]
         public void Can_Create_User_Email_Already_Exists()
         {
-            Assert.Throws<EmailAlreadyExistsException>(() => _service.CreateUser(mockuser));
+            Assert.Throws<EmailAlreadyExistsException>(() => _service.CreateUser(validUser));
         }
 
         [Test]
