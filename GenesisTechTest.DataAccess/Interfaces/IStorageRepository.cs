@@ -8,7 +8,7 @@ namespace GenesisTechTest.DataAccess.Interfaces
         User GetByUserIdOrDefault(Guid userid);
         User GetByEmailOrDefault(string emaild);
         void Create(User user);
-        bool SetLastLogin(Guid id, DateTime lastLogin);
+        void UpdateLastLogin(Guid id, DateTime lastLogin, string token);
         bool IsEmailAlreadyExists(string email);
     }
 }

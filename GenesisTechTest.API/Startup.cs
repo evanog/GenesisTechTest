@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -71,7 +72,7 @@ namespace GenesisTechTest.API
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Core API");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Genesis Tech Test API");
             });
         }
 
@@ -130,6 +131,7 @@ namespace GenesisTechTest.API
             services.AddSingleton<IPasswordHashService, PasswordHashService>();
             services.AddSingleton<IIdentityService, IdentityService>();
             services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IValidationService, ValidationService>();
         }
     }
 }

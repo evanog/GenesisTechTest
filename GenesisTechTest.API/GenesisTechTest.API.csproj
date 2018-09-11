@@ -7,15 +7,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>XMLDocumentation\GenesisTechTest.API.xml</DocumentationFile>
     <NoWarn>1701;1702; 1591</NoWarn>
-    <OutputPath>XMLDocumentation\</OutputPath>
+    <OutputPath></OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="XMLDocumentation\GenesisTechTest.API.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="wwwroot\" />
+    <Folder Include="XMLDocumentation\" />
   </ItemGroup>
 
   <ItemGroup>

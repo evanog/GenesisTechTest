@@ -8,11 +8,11 @@ namespace GenesisTechTest.Domain.UnitTests.ServicesTests
     [TestFixture]
     public class ValidatorServiceTests
     {
-        private readonly ValidatorService _service;
+        private readonly ValidationService _service;
 
         public ValidatorServiceTests()
         {
-            _service = new ValidatorService();
+            _service = new ValidationService();
         }
 
         [Test]

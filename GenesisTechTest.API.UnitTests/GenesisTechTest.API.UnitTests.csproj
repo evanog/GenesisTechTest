@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GenesisTechTest.API\GenesisTechTest.API.csproj" />
+    <ProjectReference Include="..\GenesisTechTest.Common\GenesisTechTest.Common.csproj" />
   </ItemGroup>
 
 </Project>
